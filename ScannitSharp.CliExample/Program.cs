@@ -9,9 +9,12 @@ namespace ScannitSharp.CliExample
         {
             Console.WriteLine(Native.GetString());
 
-            var vector = Native.get_vector();
-            vector.GetData();
-            Native.free_vector(vector);
+            var strings = Native.GetStringArray();
+            Console.WriteLine($"Call to get_vector() returned {strings.Length} strings:");
+            foreach (var str in strings)
+            {
+                Console.WriteLine($"\t{str}");
+            }
         }
     }
 }
