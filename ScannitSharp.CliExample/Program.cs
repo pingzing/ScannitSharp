@@ -7,9 +7,10 @@ namespace ScannitSharp.CliExample
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(Native.GetString());
+            string stringFromRust = Native.GetString();
+            Console.WriteLine(stringFromRust);
 
-            var strings = Native.GetStringArray();
+            string[] strings = Native.GetStringArray();
             Console.WriteLine($"Call to get_vector() returned {strings.Length} strings:");
             foreach (var str in strings)
             {

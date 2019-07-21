@@ -7,6 +7,7 @@ namespace ScannitSharp.Bindings
     {
         [DllImport("native/scannit_core_ffi")]
         internal static extern RustString get_string();
+
         [DllImport("native/scannit_core_ffi")]
         internal static extern void free_string(IntPtr rustString);
 
@@ -25,7 +26,7 @@ namespace ScannitSharp.Bindings
 
         public static string[] GetStringArray()
         {
-            using (var rustBuffer = Native.get_vector())
+            using (RustStringBuffer rustBuffer = Native.get_vector())
             {
                 return rustBuffer.AsStringArray();
             }
