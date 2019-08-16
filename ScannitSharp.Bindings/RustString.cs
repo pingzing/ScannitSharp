@@ -4,34 +4,41 @@ using System.Text;
 
 namespace ScannitSharp.Bindings
 {
-    internal class RustString : SafeHandle
+    internal class RustString
     {
+        private IntPtr _ptr;
+        private int _length;
         private string _cSharpString;
 
-        internal RustString(IntPtr ptr) : base(IntPtr.Zero, true)
+        /// <summary>
+        /// Prepares to read a pointer to a sequence of C-style chars, and discovers its length
+        /// by walking the string until it encounters a NUL terminator.
+        /// </summary>
+        /// <param name="ptr"></param>
+        internal RustString(IntPtr ptr)
         {
-            this.handle = ptr;
+            _ptr = ptr;
+            while (Marshal.ReadByte(ptr, _length) != 0)
+            {
+                ++_length;
+            }
         }
 
-        internal RustString() : base(IntPtr.Zero, true) { }
-
-        public override bool IsInvalid => false;
-        protected override bool ReleaseHandle()
+        /// <summary>
+        /// Prepares to read a pointer to a sequence of C-style chars.
+        /// </summary>
+        /// <param name="ptr">Pointer to C-style bytes, terminated with a NUL char.</param>
+        /// <param name="length">Length of the array of chars (includes the NUL terminator).</param>
+        internal RustString(IntPtr ptr, int length)
         {
-            Native.free_string(handle);
-            return true;
+            _ptr = ptr;
+            _length = length;
         }
 
         internal string AsCSharpString()
         {
-            int len = 0;
-            while (Marshal.ReadByte(handle, len) != 0)
-            {
-                ++len;
-            }
-
-            byte[] buffer = new byte[len];
-            Marshal.Copy(handle, buffer, 0, buffer.Length);
+            byte[] buffer = new byte[_length];
+            Marshal.Copy(_ptr, buffer, 0, buffer.Length);
             return Encoding.UTF8.GetString(buffer);
         }
 

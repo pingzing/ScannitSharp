@@ -4,28 +4,39 @@ using System.Runtime.InteropServices;
 namespace ScannitSharp.Bindings
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct RustStringBuffer : IDisposable
+    public struct RustBuffer
     {
         private IntPtr Data;
         private UIntPtr Len;
+        private UIntPtr Capacity;
 
-        internal string[] AsStringArray()
+        internal byte[] AsByteArray()
         {
             uint length = Len.ToUInt32();
-            string[] strings = new string[length];
+            byte[] bytes = new byte[length];
             for (int i = 0; i < length; i++)
             {
-                var stringPointer = Marshal.ReadIntPtr(Data, i * IntPtr.Size);
-                var rustString = new RustString(stringPointer);
-                strings[i] = rustString.AsCSharpString();
+                bytes[i] = Marshal.ReadByte(Data);
             }
 
-            return strings;
+            return bytes;
         }
 
-        public void Dispose()
+        internal string AsString()
         {
-            Native.free_vector(this);
+            var rustString = new RustString(Data, (int)Len.ToUInt32());
+            return rustString.ToString();
+        }
+
+        internal FFIHistory[] AsFFIHistoryArray()
+        {
+            //uint length = Len.ToUInt32();
+            //FFIHistory[] ffiHistories = new FFIHistory[length];
+            //for (int i = 0; i < length; i++)
+            //{
+            //    Marshal.Read
+            //}
+            return null;
         }
     }
 }

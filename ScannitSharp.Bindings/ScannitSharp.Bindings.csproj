@@ -5,10 +5,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="native\scannit_core.dll">
+    <None Remove="native\scannit_core_ffi.d" />
+    <None Remove="native\scannit_core_ffi.dll.d" />
+    <None Remove="native\scannit_core_ffi.dll.lib" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="native\scannit_core_ffi.d" >
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="native\scannit_core_ffi.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="native\scannit_core_ffi.dll.d">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="native\scannit_core_ffi.dll.lib">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
