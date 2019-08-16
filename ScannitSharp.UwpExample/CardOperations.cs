@@ -1,4 +1,5 @@
 ﻿using ScannitSharp.Bindings;
+using ScannitSharp.Bindings.Models;
 using System;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;

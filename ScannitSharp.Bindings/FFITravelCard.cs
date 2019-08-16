@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScannitSharp.Bindings.Models;
+using System;
 using System.Runtime.InteropServices;
 
 namespace ScannitSharp.Bindings
@@ -35,30 +36,13 @@ namespace ScannitSharp.Bindings
         private TravelCard ReadStructData()
         {
             FFITravelCard travelCard = Marshal.PtrToStructure<FFITravelCard>(handle);
-            return new TravelCard
-            {
-                ActionListCounter = travelCard.action_list_counter,
-                ApplicationInstanceId = new RustString(travelCard.application_instance_id).ToString(),
-                ApplicationIssuingDate = DateTimeOffset.FromUnixTimeSeconds(travelCard.application_issuing_date),
-                ApplicationKeyVersion = travelCard.application_key_version,
-                ApplicationStatus = travelCard.application_status,
-                ApplicationTransactionCounter = travelCard.application_transaction_counter,
-                ApplicationUnblockingNumber = travelCard.application_unblocking_number,
-                ApplicationVersion = travelCard.application_version,
-                //ETicket = ,
-                //History = ,
-                IsMacProtected = travelCard.is_mac_protected,
-                LastLoadDateTime = DateTimeOffset.FromUnixTimeSeconds(travelCard.last_load_datetime),
-                LastLoadDeviceNum = travelCard.last_load_device_num,
-                LastLoadOrganization = travelCard.last_load_organization_id,
-                LastLoadValue = travelCard.last_load_value,
-                //PeriodPass = ,
-                PlatformType = travelCard.platform_type,
-                StoredValueCents = travelCard.stored_value_cents,
-            };
+            return new TravelCard(travelCard);
         }
     }
 
+    // Note: Rust bools are 1-byte members. C# bools in a Sequential struct seem to align to 4-byte boundaries, though.
+    // Probably for legacy reasons--I think Win32 BOOLs are 32-bit values.
+    // For that reason, we use 'byte' for boolean fields, and convert in the AsTravelCard method.
     [StructLayout(LayoutKind.Sequential)]
     internal struct FFITravelCard
     {
@@ -66,9 +50,9 @@ namespace ScannitSharp.Bindings
         internal byte application_key_version;
         internal IntPtr application_instance_id;
         internal byte platform_type;
-        internal bool is_mac_protected;
+        internal byte is_mac_protected;
         internal long application_issuing_date;
-        internal bool application_status;
+        internal byte application_status;
         internal byte application_unblocking_number;
         internal uint application_transaction_counter;
         internal uint action_list_counter;
@@ -94,12 +78,14 @@ namespace ScannitSharp.Bindings
         internal ValidityAreaKind validity_area_1_kind;
         internal RustBuffer validity_area_1_buffer; // of u8s
         internal long period_start_date_1;
+        internal long period_end_date_1;
 
         internal ProductCodeKind product_code_2_kind;
         internal ushort product_code_2_value;
         internal ValidityAreaKind validity_area_2_kind;
         internal RustBuffer validity_area_2_buffer; // of u8s
         internal long period_start_date_2;
+        internal long period_end_date_2;
 
         internal ProductCodeKind loaded_period_product_kind;
         internal ushort loaded_period_product_value;
@@ -114,8 +100,8 @@ namespace ScannitSharp.Bindings
         internal BoardingLocationKind last_board_location_kind;
         internal ushort last_board_location_value;
         internal BoardingDirection last_board_direction;
-        internal ValidityAreaKind last_board_area_kind;
-        internal RustBuffer last_board_area_value;
+        internal BoardingAreaKind last_board_area_kind;
+        internal byte last_board_area_value;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -135,7 +121,7 @@ namespace ScannitSharp.Bindings
         public ushort ticket_fare_cents;
         public byte group_size;
 
-        internal bool extra_zone;
+        internal byte extra_zone;
         internal ValidityAreaKind period_pass_validity_area_kind;
         internal RustBuffer period_pass_validity_area_value;
         internal ProductCodeKind extension_product_code_kind;
@@ -146,13 +132,13 @@ namespace ScannitSharp.Bindings
         internal ValidityAreaKind extension_2_validity_area_kind;
         internal RustBuffer extension_2_validity_area_value;
         internal ushort extension_2_fare_cents;
-        internal bool sale_status;
+        internal byte sale_status;
 
         internal long validity_start_datetime;
         internal long validity_end_datetime;
-        internal bool validity_status;
+        internal byte validity_status;
 
-        internal long bording_datetime;
+        internal long boarding_datetime;
         internal ushort boarding_vehicle;
         internal BoardingLocationKind boarding_location_kind;
         internal ushort boarding_location_value;
@@ -172,20 +158,20 @@ namespace ScannitSharp.Bindings
         internal uint remaining_value;
     }
 
-    internal enum ProductCodeKind : uint
+    public enum ProductCodeKind : uint
     {
         FaresFor2010 = 0,
         FaresFor2014 = 1,
     }
 
-    internal enum ValidityAreaKind : uint
+    public enum ValidityAreaKind : uint
     {
         OldZone = 0,
         VehicleType = 1,
         NewZone = 2,
     }
 
-    internal enum BoardingLocationKind : uint
+    public enum BoardingLocationKind : uint
     {
         NoneOrReserved = 0,
         BusNumber = 1,
@@ -193,7 +179,7 @@ namespace ScannitSharp.Bindings
         PlatformNumber = 3,
     }
 
-    internal enum ValidityLengthKind : uint
+    public enum ValidityLengthKind : uint
     {
         Minutes = 0,
         Hours = 1,
@@ -201,7 +187,7 @@ namespace ScannitSharp.Bindings
         Days = 3,
     }
 
-    internal enum SaleDeviceKind : uint
+    public enum SaleDeviceKind : uint
     {
         ServicePointSalesDevice = 0,
         DriverTicketMachine = 1,
@@ -213,7 +199,7 @@ namespace ScannitSharp.Bindings
         Reserved = 7,
     }
 
-    internal enum BoardingAreaKind : uint
+    public enum BoardingAreaKind : uint
     {
         Zone = 0,
         Vehicle = 1,

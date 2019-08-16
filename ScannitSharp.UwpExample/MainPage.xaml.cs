@@ -30,14 +30,18 @@ namespace ScannitSharp.UwpExample
                 SmartCardReader reader = await SmartCardReader.FromIdAsync(device.Id);
                 reader.CardAdded += Reader_CardAdded;
                 reader.CardRemoved += Reader_CardRemoved;
+                foreach (var foundCard in (await reader.FindAllCardsAsync()))
+                {
+                    var card = await CardOperations.ReadTravelCardAsync(foundCard);
+                }
             }
         }
 
-        private void Reader_CardAdded(SmartCardReader sender, CardAddedEventArgs args)
+        private async void Reader_CardAdded(SmartCardReader sender, CardAddedEventArgs args)
         {
             try
             {
-                var card = CardOperations.ReadTravelCardAsync(args.SmartCard);
+                var card = await CardOperations.ReadTravelCardAsync(args.SmartCard);
             }
 
             catch (Exception e)

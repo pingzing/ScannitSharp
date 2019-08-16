@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScannitSharp.Bindings.Models;
+using System;
 using System.Runtime.InteropServices;
 
 namespace ScannitSharp.Bindings
