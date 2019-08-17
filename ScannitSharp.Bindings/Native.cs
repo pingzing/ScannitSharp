@@ -1,5 +1,4 @@
-﻿using ScannitSharp.Bindings.Models;
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace ScannitSharp.Bindings
@@ -18,53 +17,57 @@ namespace ScannitSharp.Bindings
         [DllImport("native/scannit_core_ffi")]
         internal static extern void free_travel_card(IntPtr travel_card_ptr);
 
-        public static TravelCard GetTravelCard(
-            byte[] appInfo,
-            byte[] controlInfo,
-            byte[] periodPass,
-            byte[] storedValue,
-            byte[] eTicket,
-            byte[] history)
-        {
-            GCHandle pinnedAppInfo = GCHandle.Alloc(appInfo, GCHandleType.Pinned);
-            IntPtr appInfoPtr = pinnedAppInfo.AddrOfPinnedObject();
+        [DllImport("native/scannit_core_ffi")]
+        [return: MarshalAs(UnmanagedType.LPArray, SizeConst = 5)]
+        internal static extern byte[] get_GET_VERSION_COMMAND();
 
-            GCHandle pinnedControlInfo = GCHandle.Alloc(controlInfo, GCHandleType.Pinned);
-            IntPtr controlInfoPtr = pinnedControlInfo.AddrOfPinnedObject();
+        [DllImport("native/scannit_core_ffi")]
+        [return: MarshalAs(UnmanagedType.LPArray, SizeConst = 5)]
+        internal static extern byte[] get_GET_APPLICATION_IDS_COMMAND();
 
-            GCHandle pinnedPeriodPass = GCHandle.Alloc(periodPass, GCHandleType.Pinned);
-            IntPtr periodPassPtr = pinnedPeriodPass.AddrOfPinnedObject();
+        [DllImport("native/scannit_core_ffi")]
+        [return: MarshalAs(UnmanagedType.LPArray, SizeConst = 9)]
+        internal static extern byte[] get_SELECT_HSL_COMMAND();
 
-            GCHandle pinnedStoredValue = GCHandle.Alloc(storedValue, GCHandleType.Pinned);
-            IntPtr storedValuePtr = pinnedStoredValue.AddrOfPinnedObject();
+        [DllImport("native/scannit_core_ffi")]
+        [return: MarshalAs(UnmanagedType.LPArray, SizeConst = 13)]
+        internal static extern byte[] get_READ_APP_INFO_COMMAND();
 
-            GCHandle pinnedETicket = GCHandle.Alloc(eTicket, GCHandleType.Pinned);
-            IntPtr eTicketPtr = pinnedETicket.AddrOfPinnedObject();
+        [DllImport("native/scannit_core_ffi")]
+        [return: MarshalAs(UnmanagedType.LPArray, SizeConst = 13)]
+        internal static extern byte[] get_READ_CONTROL_INFO_COMMAND();
 
-            GCHandle pinnedHistory = GCHandle.Alloc(history, GCHandleType.Pinned);
-            IntPtr historyPtr = pinnedHistory.AddrOfPinnedObject();
+        [DllImport("native/scannit_core_ffi")]
+        [return: MarshalAs(UnmanagedType.LPArray, SizeConst = 13)]
+        internal static extern byte[] get_READ_PERIOD_PASS_COMMAND();
 
-            IntPtr travelCardPtr = Native.create_travel_card(
-                appInfoPtr, new UIntPtr((uint)appInfo.Length),
-                controlInfoPtr, new UIntPtr((uint)controlInfo.Length),
-                periodPassPtr, new UIntPtr((uint)periodPass.Length),
-                storedValuePtr, new UIntPtr((uint)storedValue.Length),
-                eTicketPtr, new UIntPtr((uint)eTicket.Length),
-                historyPtr, new UIntPtr((uint)history.Length));
+        [DllImport("native/scannit_core_ffi")]
+        [return: MarshalAs(UnmanagedType.LPArray, SizeConst = 13)]
+        internal static extern byte[] get_READ_STORED_VALUE_COMMAND();
 
+        [DllImport("native/scannit_core_ffi")]
+        [return: MarshalAs(UnmanagedType.LPArray, SizeConst = 13)]
+        internal static extern byte[] get_READ_E_TICKET_COMMAND();
 
-            using (FFITravelCardHandle travelCardHandle = new FFITravelCardHandle(travelCardPtr))
-            {
-                pinnedAppInfo.Free();
-                pinnedControlInfo.Free();
-                pinnedPeriodPass.Free();
-                pinnedStoredValue.Free();
-                pinnedETicket.Free();
-                pinnedHistory.Free();
+        [DllImport("native/scannit_core_ffi")]
+        [return: MarshalAs(UnmanagedType.LPArray, SizeConst = 13)]
+        internal static extern byte[] get_READ_HISTORY_COMMAND();
 
-                return travelCardHandle.AsTravelCard();
-            }
-        }
+        [DllImport("native/scannit_core_ffi")]
+        [return: MarshalAs(UnmanagedType.LPArray, SizeConst = 5)]
+        internal static extern byte[] get_READ_NEXT_COMMAND();
+
+        [DllImport("native/scannit_core_ffi")]
+        [return: MarshalAs(UnmanagedType.LPArray, SizeConst = 2)]
+        internal static extern byte[] get_OK_RESPONSE();
+
+        [DllImport("native/scannit_core_ffi")]
+        [return: MarshalAs(UnmanagedType.LPArray, SizeConst = 2)]
+        internal static extern byte[] get_ERROR_RESPONSE();
+
+        [DllImport("native/scannit_core_ffi")]
+        [return: MarshalAs(UnmanagedType.LPArray, SizeConst = 2)]
+        internal static extern byte[] get_MORE_DATA_RESPONSE();
     }
 }
 

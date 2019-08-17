@@ -1,5 +1,4 @@
 ﻿using ScannitSharp.Bindings;
-using ScannitSharp.Bindings.Models;
 using System;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -19,10 +18,10 @@ namespace ScannitSharp.UwpExample
         {
             using (SmartCardConnection connection = await card.ConnectAsync())
             {
-                byte[] selection = (await connection.TransmitAsync(HslCommands.SelectHslCommand.AsBuffer())).ToArray();
+                byte[] selection = (await connection.TransmitAsync(Commands.SelectHslCommand.AsBuffer())).ToArray();
                 if (selection != null
                     && selection.Length > 0
-                    && selection.SequenceEqual(HslCommands.OkResponse))
+                    && selection.SequenceEqual(Commands.OkResponse))
                 {
                     // Travel card info bytes
                     byte[] appInfo = null;
@@ -36,25 +35,24 @@ namespace ScannitSharp.UwpExample
                     byte[] hist1 = new byte[2];
                     byte[] hist2 = new byte[2];
 
-                    appInfo = (await connection.TransmitAsync(HslCommands.ReadAppInfoCommand.AsBuffer())).ToArray();
-                    controlInfo = (await connection.TransmitAsync(HslCommands.ReadControlInfoCommand.AsBuffer())).ToArray();
-                    periodPass = (await connection.TransmitAsync(HslCommands.ReadPeriodPassCommand.AsBuffer())).ToArray();
-                    storedValue = (await connection.TransmitAsync(HslCommands.ReadStoredValueCommand.AsBuffer())).ToArray();
-                    eTicket = (await connection.TransmitAsync(HslCommands.ReadETicketCommand.AsBuffer())).ToArray();
-                    hist1 = (await connection.TransmitAsync(HslCommands.ReadHistoryCommand.AsBuffer())).ToArray();
+                    appInfo = (await connection.TransmitAsync(Commands.ReadAppInfoCommand.AsBuffer())).ToArray();
+                    controlInfo = (await connection.TransmitAsync(Commands.ReadControlInfoCommand.AsBuffer())).ToArray();
+                    periodPass = (await connection.TransmitAsync(Commands.ReadPeriodPassCommand.AsBuffer())).ToArray();
+                    storedValue = (await connection.TransmitAsync(Commands.ReadStoredValueCommand.AsBuffer())).ToArray();
+                    eTicket = (await connection.TransmitAsync(Commands.ReadETicketCommand.AsBuffer())).ToArray();
+                    hist1 = (await connection.TransmitAsync(Commands.ReadHistoryCommand.AsBuffer())).ToArray();
 
                     // If we have more history, the last two bytes of the history array will contain the MORE_DATA bytes.
-                    if (hist1.Skip(Math.Max(0, hist1.Length - 2)).ToArray() == HslCommands.MoreData)
+                    if (hist1.Skip(Math.Max(0, hist1.Length - 2)).ToArray() == Commands.MoreDataResponse)
                     {
-                        hist2 = (await connection.TransmitAsync(HslCommands.ReadNextCommand.AsBuffer())).ToArray();
+                        hist2 = (await connection.TransmitAsync(Commands.ReadNextCommand.AsBuffer())).ToArray();
                     }
 
                     // Combine the two history chunks into a single array, minus their last two MORE_DATA bytes
                     history = hist1.Take(hist1.Length - 2)
                                      .Concat(hist2.Take(hist2.Length - 2)).ToArray();
 
-                    var rawCard = Native.GetTravelCard(appInfo, controlInfo, periodPass, storedValue, eTicket, history);
-                    return null;
+                    return TravelCard.CreateTravelCard(appInfo, controlInfo, periodPass, storedValue, eTicket, history);
                 }
                 else
                 {

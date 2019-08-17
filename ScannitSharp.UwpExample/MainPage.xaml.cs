@@ -1,5 +1,8 @@
-﻿using System;
+﻿using ScannitSharp.Bindings;
+using System;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Text;
 using Windows.Devices.Enumeration;
 using Windows.Devices.SmartCards;
 using Windows.UI.Xaml;
@@ -41,7 +44,13 @@ namespace ScannitSharp.UwpExample
         {
             try
             {
-                var card = await CardOperations.ReadTravelCardAsync(args.SmartCard);
+                TravelCard card = await CardOperations.ReadTravelCardAsync(args.SmartCard);
+                StringBuilder allProperties = new StringBuilder();
+                foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(card))
+                {
+                    allProperties.AppendLine($"{descriptor.Name}={descriptor.GetValue(card)}");
+                }
+                PropertiesTextBlock.Text = allProperties.ToString();
             }
 
             catch (Exception e)
