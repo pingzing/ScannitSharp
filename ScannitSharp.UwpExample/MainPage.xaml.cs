@@ -1,10 +1,13 @@
 ﻿using ScannitSharp.Bindings;
 using System;
+using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
+using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
 using Windows.Devices.SmartCards;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -35,22 +38,28 @@ namespace ScannitSharp.UwpExample
                 reader.CardRemoved += Reader_CardRemoved;
                 foreach (var foundCard in (await reader.FindAllCardsAsync()))
                 {
-                    var card = await CardOperations.ReadTravelCardAsync(foundCard);
+                    await ReadCard(foundCard);
                 }
             }
         }
 
         private async void Reader_CardAdded(SmartCardReader sender, CardAddedEventArgs args)
         {
+            await ReadCard(args.SmartCard);
+        }
+
+        private async Task ReadCard(SmartCard card)
+        {
             try
             {
-                TravelCard card = await CardOperations.ReadTravelCardAsync(args.SmartCard);
-                StringBuilder allProperties = new StringBuilder();
-                foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(card))
+                TravelCard travelCard = await CardOperations.ReadTravelCardAsync(card);
+                StringBuilder builder = new StringBuilder();
+                BuildPropertyString(travelCard, 0, builder);
+
+                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    allProperties.AppendLine($"{descriptor.Name}={descriptor.GetValue(card)}");
-                }
-                PropertiesTextBlock.Text = allProperties.ToString();
+                    PropertiesTextBlock.Text = builder.ToString();
+                });
             }
 
             catch (Exception e)
@@ -62,6 +71,37 @@ namespace ScannitSharp.UwpExample
         private void Reader_CardRemoved(SmartCardReader sender, CardRemovedEventArgs args)
         {
             // Update UI, etc.
+        }
+
+        private void BuildPropertyString(object obj, int indentLevel, StringBuilder builder)
+        {
+            if (obj == null)
+                return;
+            string indentString = new string(' ', indentLevel);
+            foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(obj))
+            {
+                string name = descriptor.Name;
+                object value = descriptor.GetValue(obj);
+                if (value is IEnumerable enumerable && !(value is string))
+                {
+                    foreach (var element in enumerable)
+                    {
+                        BuildPropertyString(element, indentLevel + 5, builder);
+                    }
+                }
+                else
+                {
+                    if (descriptor.PropertyType.Assembly == obj.GetType().Assembly)
+                    {
+                        builder.AppendLine($"{indentString}{name}:");
+                        BuildPropertyString(value, indentLevel + 5, builder);
+                    }
+                    else
+                    {
+                        builder.AppendLine($"{indentString}{name}: {value}");
+                    }
+                }
+            }
         }
     }
 }

@@ -18,56 +18,43 @@ namespace ScannitSharp.Bindings
         internal static extern void free_travel_card(IntPtr travel_card_ptr);
 
         [DllImport("native/scannit_core_ffi")]
-        [return: MarshalAs(UnmanagedType.LPArray, SizeConst = 5)]
-        internal static extern byte[] get_GET_VERSION_COMMAND();
+        internal static extern IntPtr get_GET_VERSION_COMMAND();
 
         [DllImport("native/scannit_core_ffi")]
-        [return: MarshalAs(UnmanagedType.LPArray, SizeConst = 5)]
-        internal static extern byte[] get_GET_APPLICATION_IDS_COMMAND();
+        internal static extern IntPtr get_GET_APPLICATION_IDS_COMMAND();
 
         [DllImport("native/scannit_core_ffi")]
-        [return: MarshalAs(UnmanagedType.LPArray, SizeConst = 9)]
-        internal static extern byte[] get_SELECT_HSL_COMMAND();
+        internal static extern IntPtr get_SELECT_HSL_COMMAND();
 
         [DllImport("native/scannit_core_ffi")]
-        [return: MarshalAs(UnmanagedType.LPArray, SizeConst = 13)]
-        internal static extern byte[] get_READ_APP_INFO_COMMAND();
+        internal static extern IntPtr get_READ_APP_INFO_COMMAND();
 
         [DllImport("native/scannit_core_ffi")]
-        [return: MarshalAs(UnmanagedType.LPArray, SizeConst = 13)]
-        internal static extern byte[] get_READ_CONTROL_INFO_COMMAND();
+        internal static extern IntPtr get_READ_CONTROL_INFO_COMMAND();
 
         [DllImport("native/scannit_core_ffi")]
-        [return: MarshalAs(UnmanagedType.LPArray, SizeConst = 13)]
-        internal static extern byte[] get_READ_PERIOD_PASS_COMMAND();
+        internal static extern IntPtr get_READ_PERIOD_PASS_COMMAND();
 
         [DllImport("native/scannit_core_ffi")]
-        [return: MarshalAs(UnmanagedType.LPArray, SizeConst = 13)]
-        internal static extern byte[] get_READ_STORED_VALUE_COMMAND();
+        internal static extern IntPtr get_READ_STORED_VALUE_COMMAND();
 
         [DllImport("native/scannit_core_ffi")]
-        [return: MarshalAs(UnmanagedType.LPArray, SizeConst = 13)]
-        internal static extern byte[] get_READ_E_TICKET_COMMAND();
+        internal static extern IntPtr get_READ_E_TICKET_COMMAND();
 
         [DllImport("native/scannit_core_ffi")]
-        [return: MarshalAs(UnmanagedType.LPArray, SizeConst = 13)]
-        internal static extern byte[] get_READ_HISTORY_COMMAND();
+        internal static extern IntPtr get_READ_HISTORY_COMMAND();
 
         [DllImport("native/scannit_core_ffi")]
-        [return: MarshalAs(UnmanagedType.LPArray, SizeConst = 5)]
-        internal static extern byte[] get_READ_NEXT_COMMAND();
+        internal static extern IntPtr get_READ_NEXT_COMMAND();
 
         [DllImport("native/scannit_core_ffi")]
-        [return: MarshalAs(UnmanagedType.LPArray, SizeConst = 2)]
-        internal static extern byte[] get_OK_RESPONSE();
+        internal static extern IntPtr get_OK_RESPONSE();
 
         [DllImport("native/scannit_core_ffi")]
-        [return: MarshalAs(UnmanagedType.LPArray, SizeConst = 2)]
-        internal static extern byte[] get_ERROR_RESPONSE();
+        internal static extern IntPtr get_ERROR_RESPONSE();
 
         [DllImport("native/scannit_core_ffi")]
-        [return: MarshalAs(UnmanagedType.LPArray, SizeConst = 2)]
-        internal static extern byte[] get_MORE_DATA_RESPONSE();
+        internal static extern IntPtr get_MORE_DATA_RESPONSE();
     }
 }
 
