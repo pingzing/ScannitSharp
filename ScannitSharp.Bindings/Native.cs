@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace ScannitSharp.Bindings
 {
-    public static class Native
+    internal static class Native
     {
         [DllImport("native/scannit_core_ffi")]
         internal static extern IntPtr create_travel_card(

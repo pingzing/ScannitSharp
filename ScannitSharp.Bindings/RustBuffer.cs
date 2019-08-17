@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace ScannitSharp.Bindings
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct RustBuffer
+    internal struct RustBuffer
     {
         private IntPtr Data;
         private UIntPtr Len;
