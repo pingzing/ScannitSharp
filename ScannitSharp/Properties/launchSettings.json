@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ScannitSharp.Bindings": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

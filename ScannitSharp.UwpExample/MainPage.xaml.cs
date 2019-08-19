@@ -1,4 +1,4 @@
-﻿using ScannitSharp.Bindings;
+﻿using ScannitSharp;
 using System;
 using System.Collections;
 using System.ComponentModel;

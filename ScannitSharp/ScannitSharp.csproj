@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.1.1</Version>
+    <Authors>Neil McAlister</Authors>
+    <Company />
+    <Product />
+    <Description>C# Bindings to the scannit-core (https://github.com/pingzing/scannit-core) library, used for reading Helsinki HSL travel cards.</Description>
+    <Copyright>2019 Neil McAlister</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/pingzing/scannit-core</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/pingzing/scannit-core</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="runtimes\**" PackagePath="runtimes">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OneOf" Version="2.1.150" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="runtimes\android-arm64\native\" />
+    <Folder Include="runtimes\android-arm\native\" />
+    <Folder Include="runtimes\linux-x64\native\" />
+    <Folder Include="runtimes\linux-x86\native\" />
+    <Folder Include="runtimes\osx-x64\native\" />
+    <Folder Include="runtimes\win-x86\native\" />
+  </ItemGroup>
+
+</Project>
