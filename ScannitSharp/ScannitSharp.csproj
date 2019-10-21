@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <Version>0.1.1</Version>
     <Authors>Neil McAlister</Authors>
     <Company />
@@ -23,15 +25,6 @@
 
   <ItemGroup>
     <PackageReference Include="OneOf" Version="2.1.150" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="runtimes\android-arm64\native\" />
-    <Folder Include="runtimes\android-arm\native\" />
-    <Folder Include="runtimes\linux-x64\native\" />
-    <Folder Include="runtimes\linux-x86\native\" />
-    <Folder Include="runtimes\osx-x64\native\" />
-    <Folder Include="runtimes\win-x86\native\" />
   </ItemGroup>
 
 </Project>
