@@ -14,7 +14,7 @@ steps:
   inputs:
     command: 'build'
     projects: 'ScannitSharp/ScannitSharp.csproj'
-    arguments: '-c Release'
+    arguments: '-c Release -o $(Build.ArtifactStagingDirectory)'
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
