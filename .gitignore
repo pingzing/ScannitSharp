@@ -9,6 +9,7 @@
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
+nuget_key.txt
 
 # Build results
 [Dd]ebug/
