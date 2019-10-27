@@ -23,21 +23,36 @@ namespace ScannitSharp.Models.ValidityAreas
         }
     }
 
+    /// <summary>
+    /// Old, regoin-style zone.
+    /// </summary>
     public class OldZone
     {
-        public ValidityAreaKind Kind => ValidityAreaKind.OldZone;
+        /// <summary>
+        /// Old, regoin-style zone value.
+        /// </summary>
         public byte Value { get; set; }
     }
 
+    /// <summary>
+    /// New, ABC-style zone.
+    /// </summary>
     public class NewZone
     {
-        public ValidityAreaKind Kind => ValidityAreaKind.NewZone;
+        /// <summary>
+        /// An array of the valid zones.
+        /// </summary>
         public ValidityZone[] Value { get; set; }
     }
 
+    /// <summary>
+    /// Type of vehicle.
+    /// </summary>
     public class Vehicle
     {
-        public ValidityAreaKind Kind => ValidityAreaKind.VehicleType;
+        /// <summary>
+        /// Type of vehicle.
+        /// </summary>
         public VehicleType Value { get; set; }
     }
 }

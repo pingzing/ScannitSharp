@@ -4,9 +4,9 @@ using System;
 namespace ScannitSharp.Models.BoardingLocations
 {
 
-    public static class BoardingLocation
+    internal static class BoardingLocation
     {
-        public static OneOf<NoneOrReserved, BusNumber, TrainNumber, PlatformNumber> Create(BoardingLocationKind kind, ushort value)
+        internal static OneOf<NoneOrReserved, BusNumber, TrainNumber, PlatformNumber> Create(BoardingLocationKind kind, ushort value)
         {
             switch (kind)
             {
@@ -23,26 +23,42 @@ namespace ScannitSharp.Models.BoardingLocations
             }
         }
     }
-    public class NoneOrReserved
-    {
-        public BoardingLocationKind Kind => BoardingLocationKind.NoneOrReserved;
-    }
 
+    /// <summary>
+    /// Indicates that there was no relevant boarding location information.
+    /// </summary>
+    public class NoneOrReserved { }
+
+    /// <summary>
+    /// The number of the boarded bus.
+    /// </summary>
     public class BusNumber
     {
-        public BoardingLocationKind Kind => BoardingLocationKind.BusNumber;
+        /// <summary>
+        /// The number of the boarded bus.
+        /// </summary>
         public ushort Value { get; set; }
     }
 
+    /// <summary>
+    /// The number of the boarded train.
+    /// </summary>
     public class TrainNumber
     {
-        public BoardingLocationKind Kind => BoardingLocationKind.TrainNumber;
+        /// <summary>
+        /// The number of the boarded train.
+        /// </summary>
         public ushort Value { get; set; }
     }
 
+    /// <summary>
+    /// The number of the boarded platform.
+    /// </summary>
     public class PlatformNumber
     {
-        public BoardingLocationKind Kind => BoardingLocationKind.PlatformNumber;
+        /// <summary>
+        /// The number of the boarded platform.
+        /// </summary>
         public ushort Value { get; set; }
     }
 }

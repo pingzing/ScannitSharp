@@ -3,9 +3,9 @@ using System;
 
 namespace ScannitSharp.Models.BoardingAreas
 {
-    public static class BoardingArea
+    internal static class BoardingArea
     {
-        public static OneOf<Zone, Vehicle, ZoneCircle> Create(BoardingAreaKind kind, byte value)
+        internal static OneOf<Zone, Vehicle, ZoneCircle> Create(BoardingAreaKind kind, byte value)
         {
             switch (kind)
             {
@@ -21,21 +21,36 @@ namespace ScannitSharp.Models.BoardingAreas
         }
     }
 
+    /// <summary>
+    /// Represents a new-style ABC-zone.
+    /// </summary>
     public class Zone
     {
-        public BoardingAreaKind Kind => BoardingAreaKind.Zone;
+        /// <summary>
+        /// The zone letter.
+        /// </summary>
         public ValidityZone Value { get; set; }
     }
 
+    /// <summary>
+    /// Represents a vehicle.
+    /// </summary>
     public class Vehicle
     {
-        public BoardingAreaKind Kind => BoardingAreaKind.Vehicle;
+        /// <summary>
+        /// The kind of vehicle.
+        /// </summary>
         public VehicleType Value { get; set; }
     }
 
+    /// <summary>
+    /// An old-style zone region.
+    /// </summary>
     public class ZoneCircle
     {
-        public BoardingAreaKind Kind => BoardingAreaKind.ZoneCircle;
+        /// <summary>
+        /// An old-style zone region.
+        /// </summary>
         public byte Value { get; set; }
     }
 }

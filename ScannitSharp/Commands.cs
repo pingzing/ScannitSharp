@@ -3,10 +3,17 @@ using System.Runtime.InteropServices;
 
 namespace ScannitSharp
 {
+    /// <summary>
+    /// DESFire APDU commands that the HSL card accepts.
+    /// </summary>
     public static class Commands
     {
         private const int _getVersionLength = 5;
         private static byte[] _getVersionCommand;
+
+        /// <summary>
+        /// DESFire GetVersion command.
+        /// </summary>
         public static byte[] GetVersionCommand
         {
             get
@@ -23,13 +30,16 @@ namespace ScannitSharp
 
         private const int _getApplicationIdsLength = 5;
         private static byte[] _getApplicationIdsCommand;
+        /// <summary>
+        /// DESFire command to return all installed application IDs on the card.
+        /// </summary>
         public static byte[] GetApplicationIdsCommand
         {
             get
             {
                 if (_getApplicationIdsCommand == null)
                 {
-                    _getVersionCommand = new byte[_getApplicationIdsLength];
+                    _getApplicationIdsCommand = new byte[_getApplicationIdsLength];
                     IntPtr cmdPtr = Native.get_GET_APPLICATION_IDS_COMMAND();
                     Marshal.Copy(cmdPtr, _getApplicationIdsCommand, 0, _getApplicationIdsLength);
                 }
@@ -39,6 +49,10 @@ namespace ScannitSharp
 
         private const int _selectHslLength = 9;
         private static byte[] _selectHslCommand;
+        /// <summary>
+        /// DESFire Select Application command for selecting the HSL application on the card.
+        /// Returns <see cref="OkResponse"/> on success.
+        /// </summary>
         public static byte[] SelectHslCommand
         {
             get
@@ -55,6 +69,9 @@ namespace ScannitSharp
 
         private const int _readAppInfoLength = 13;
         private static byte[] _readAppInfoCommand;
+        /// <summary>
+        /// Command to read app info file, which contains application version, card name, etc.
+        /// </summary>
         public static byte[] ReadAppInfoCommand
         {
             get
@@ -71,6 +88,9 @@ namespace ScannitSharp
 
         private const int _readControlInfoLength = 13;
         private static byte[] _readControlInfoCommand;
+        /// <summary>
+        /// Command to read the control info file from the card.
+        /// </summary>
         public static byte[] ReadControlInfoCommand
         {
             get
@@ -87,6 +107,9 @@ namespace ScannitSharp
 
         private const int _readPeriodPassLength = 13;
         private static byte[] _readPeriodPassCommand;
+        /// <summary>
+        /// Command to read the season pass file on the card.
+        /// </summary>
         public static byte[] ReadPeriodPassCommand
         {
             get
@@ -103,6 +126,9 @@ namespace ScannitSharp
 
         private const int _readStoredValueLength = 13;
         private static byte[] _readStoredValueCommand;
+        /// <summary>
+        /// Command to read the stored value on the card.
+        /// </summary>
         public static byte[] ReadStoredValueCommand
         {
             get
@@ -119,6 +145,9 @@ namespace ScannitSharp
 
         private const int _readETicketLength = 13;
         private static byte[] _readETicketCommand;
+        /// <summary>
+        /// Command to read the active eTicket on the card.
+        /// </summary>
         public static byte[] ReadETicketCommand
         {
             get
@@ -135,6 +164,9 @@ namespace ScannitSharp
 
         private const int _readHistoryLength = 13;
         private static byte[] _readHistoryCommand;
+        /// <summary>
+        /// Command to read the 8 most recent transactions on the card.
+        /// </summary>
         public static byte[] ReadHistoryCommand
         {
             get
@@ -151,6 +183,9 @@ namespace ScannitSharp
 
         private const int _readNextLength = 5;
         private static byte[] _readNextCommand;
+        /// <summary>
+        /// Reads the remaining bytes-to-be-sent if a read request returned a MoreData response.
+        /// </summary>
         public static byte[] ReadNextCommand
         {
             get
@@ -167,6 +202,9 @@ namespace ScannitSharp
 
         private const int _okResponseLength = 2;
         private static byte[] _okResponse;
+        /// <summary>
+        /// DESFire OPERATION_OK response.
+        /// </summary>
         public static byte[] OkResponse
         {
             get
@@ -183,6 +221,9 @@ namespace ScannitSharp
 
         private const int _errorResponseLength = 2;
         private static byte[] _errorResponse;
+        /// <summary>
+        /// DESFire error response.
+        /// </summary>
         public static byte[] ErrorResponse
         {
             get
@@ -199,6 +240,9 @@ namespace ScannitSharp
 
         private const int _moreDataResponseLength = 2;
         private static byte[] _moreDataResponse;
+        /// <summary>
+        /// DESFire ADDTIONAL_FRAME response. Indicates that there is more data, if the caller would like to ask for it.
+        /// </summary>
         public static byte[] MoreDataResponse
         {
             get

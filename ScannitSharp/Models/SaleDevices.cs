@@ -3,9 +3,9 @@ using System;
 
 namespace ScannitSharp.Models.SaleDevices
 {
-    public static class SaleDevice
+    internal static class SaleDevice
     {
-        public static OneOf<ServicePointSalesDevice, DriverTicketMachine, CardReader, TicketMachine, Server, HSLSmallEquipment, ExternalServiceEquipment, Reserved> Create(SaleDeviceKind kind, ushort value)
+        internal static OneOf<ServicePointSalesDevice, DriverTicketMachine, CardReader, TicketMachine, Server, HSLSmallEquipment, ExternalServiceEquipment, Reserved> Create(SaleDeviceKind kind, ushort value)
         {
             switch (kind)
             {
@@ -31,51 +31,45 @@ namespace ScannitSharp.Models.SaleDevices
         }
     }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class ServicePointSalesDevice
     {
-        public SaleDeviceKind Kind => SaleDeviceKind.ServicePointSalesDevice;
         public ushort Value { get; set; }
     }
 
     public class DriverTicketMachine
     {
-        public SaleDeviceKind Kind => SaleDeviceKind.DriverTicketMachine;
         public ushort Value { get; set; }
     }
 
     public class CardReader
     {
-        public SaleDeviceKind Kind => SaleDeviceKind.CardReader;
         public ushort Value { get; set; }
     }
 
     public class TicketMachine
     {
-        public SaleDeviceKind Kind => SaleDeviceKind.TicketMachine;
         public ushort Value { get; set; }
     }
 
     public class Server
     {
-        public SaleDeviceKind Kind => SaleDeviceKind.Server;
         public ushort Value { get; set; }
     }
 
     public class HSLSmallEquipment
     {
-        public SaleDeviceKind Kind => SaleDeviceKind.HSLSmallEquipment;
         public ushort Value { get; set; }
     }
 
     public class ExternalServiceEquipment
     {
-        public SaleDeviceKind Kind => SaleDeviceKind.ExternalServiceEquipment;
         public ushort Value { get; set; }
     }
 
     public class Reserved
     {
-        public SaleDeviceKind Kind => SaleDeviceKind.Reserved;
         public ushort Value { get; set; }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

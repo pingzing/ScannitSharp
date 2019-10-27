@@ -4,9 +4,9 @@ using System;
 namespace ScannitSharp.Models.ProductCodes
 {
 
-    public static class ProductCode
+    internal static class ProductCode
     {
-        public static OneOf<FaresFor2010, FaresFor2014> Create(ProductCodeKind kind, ushort value)
+        internal static OneOf<FaresFor2010, FaresFor2014> Create(ProductCodeKind kind, ushort value)
         {
             switch (kind)
             {
@@ -20,15 +20,25 @@ namespace ScannitSharp.Models.ProductCodes
         }
     }
 
+    /// <summary>
+    /// Represents old-style fares and zones.
+    /// </summary>
     public class FaresFor2010
     {
-        public ProductCodeKind Kind => ProductCodeKind.FaresFor2010;
+        /// <summary>
+        /// Represents old-style fares and zones.
+        /// </summary>
         public ushort Value { get; set; }
     }
 
+    /// <summary>
+    /// Represents new, ABC-style fares and zones.
+    /// </summary>
     public class FaresFor2014
     {
-        public ProductCodeKind Kind => ProductCodeKind.FaresFor2014;
+        /// <summary>
+        /// Represents new, ABC-style fares and zones.
+        /// </summary>
         public ushort Value { get; set; }
     }
 }

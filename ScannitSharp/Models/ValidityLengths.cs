@@ -3,9 +3,9 @@ using System;
 
 namespace ScannitSharp.Models.ValidityLengths
 {
-    public static class ValidityLength
+    internal static class ValidityLength
     {
-        public static OneOf<Minutes, Hours, TwentyFourHourPeriods, Days> Create(ValidityLengthKind kind, byte value)
+        internal static OneOf<Minutes, Hours, TwentyFourHourPeriods, Days> Create(ValidityLengthKind kind, byte value)
         {
             switch (kind)
             {
@@ -22,27 +22,41 @@ namespace ScannitSharp.Models.ValidityLengths
             }
         }
     }
+
+
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class Minutes
     {
-        public ValidityLengthKind Kind => ValidityLengthKind.Minutes;
         public byte Value { get; set; }
     }
 
     public class Hours
     {
-        public ValidityLengthKind Kind => ValidityLengthKind.Hours;
         public byte Value { get; set; }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
+    /// <summary>
+    /// 24-hour periods that begin an end a specific hour and minute,
+    /// a.k.a a Finnish 'vuorokausi'.
+    /// </summary>
     public class TwentyFourHourPeriods
     {
-        public ValidityLengthKind Kind => ValidityLengthKind.TwentyFourHourPeriods;
+        /// <summary>
+        /// 24-hour periods that begin an end a specific hour and minute,
+        /// a.k.a a Finnish 'vuorokausi'.
+        /// </summary>
         public byte Value { get; set; }
     }
 
+    /// <summary>
+    /// 24-hour periods that begin and end at midnight.
+    /// </summary>
     public class Days
     {
-        public ValidityLengthKind Kind => ValidityLengthKind.Days;
+        /// <summary>
+        /// 24-hour periods that begin and end at midnight.
+        /// </summary>
         public byte Value { get; set; }
     }
 }
