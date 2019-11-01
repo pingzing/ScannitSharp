@@ -16,7 +16,7 @@ namespace ScannitSharp
             byte[] bytes = new byte[length];
             for (int i = 0; i < length; i++)
             {
-                bytes[i] = Marshal.ReadByte(Data);
+                bytes[i] = Marshal.ReadByte(Data, i);
             }
 
             return bytes;
