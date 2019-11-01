@@ -1,3 +1,6 @@
+# Grab the latest release from GitHub, and stuff its various .dlls and .sos and dylibs into the right places.
+# Also, update the version number in the .csproj.
+
 $fileNameToFolderName = @{
     # Zipfile name = ("destination folder name", "library file name inside zip file")
     #Androids
@@ -12,9 +15,6 @@ $fileNameToFolderName = @{
     "x86_64-unknown-linux-gnu" = @("linux-x64", "libscannit_core_ffi.so");
     "i686-unknown-linux-gnu"   = @("linux-x86", "libscannit_core_ffi.so");
 };
-
-# Grab the latest release from GitHub, and stuff its various .dlls and .sos and dylibs into the right places.
-# Also, update the version number in the .csproj.
 
 # Get latest release from GitHub:
 $scratchFolder = New-Item -ItemType Directory "_latestDeps" -Force
@@ -48,11 +48,12 @@ foreach ($asset in $githubResponse.assets) {
     try {
         $zipFile = [IO.Compression.ZipFile]::OpenRead("$($scratchFolder.FullName)/$($zipFileName)");
         $zipFile.Entries | 
-            Where-Object {$_.Name -eq $fileNameToExtract} | 
-            ForEach-Object{ 
+            Where-Object { $_.Name -eq $fileNameToExtract } | 
+            ForEach-Object { 
                 [System.IO.Compression.ZipFileExtensions]::ExtractToFile($_, $destPath, $true);
             };
-    } catch {
+    }
+    catch {
         Write-Error("Failed to open the zip file: $($_.Exception.Message)");
     }
     finally {
@@ -62,3 +63,11 @@ foreach ($asset in $githubResponse.assets) {
 }
 
 # TODO: Update csproj version number with whatever we pulled out of GitHub.
+[string]$versionReplaceRegex = "<Version>.+<`/Version>";
+[string]$csprojContent = Get-Content "$($PSScriptRoot)/ScannitSharp.csproj" -Raw;
+$csprojContent = $csprojContent -replace $versionReplaceRegex, "<Version>$($versionString)</Version>";
+Set-Content "$($PSScriptRoot)/ScannitSharp.csproj" $csprojContent;
+Write-Host "Version of ScannitSharp.csproj set to $($versionString)";
+
+Write-Host "Cleaning up _latestDeps folder..."
+Remove-Item "_latestDeps" -Recurse -Force;
