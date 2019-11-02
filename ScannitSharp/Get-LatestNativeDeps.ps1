@@ -1,4 +1,4 @@
-# Grab the latest release from GitHub, and stuff its various .dlls and .sos and dylibs into the right places.
+# Grab the latest release from GitHub, and stuff its various .dlls and .sos and .dylibs into the right places.
 # Also, update the version number in the .csproj.
 
 $fileNameToFolderName = @{
