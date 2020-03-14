@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Target Name="_IncludeNativeScannitCore" AfterTargets="RedirectMonoAndroidSdkPaths">
+
+    <Message Text="Running _IncludeNativeScannitCore. Running in $(MSBuildThisFileDirectory). Value of AndroidSupportAbis: '$(AndroidSupportedAbis)'" Importance="high"/>
+    <!--Android 32-bit ARM v7a-->
+    <ItemGroup Condition="$(AndroidSupportedAbis.Contains('armeabi-v7a'))">      
+      <AndroidNativeLibrary Include="$(MSBuildThisFileDirectory)..\..\runtimes\android-arm\native\libscannit_core_ffi.so">
+        <Abi>armeabi-v7a</Abi>
+      </AndroidNativeLibrary>
+    </ItemGroup>
+
+    <!--Android 64-bit ARMv8a-->
+    <ItemGroup Condition="$(AndroidSupportedAbis.Contains('arm64-v8a'))">      
+      <AndroidNativeLibrary Include="$(MSBuildThisFileDirectory)..\..\runtimes\android-arm64\native\libscannit_core_ffi.so">
+        <Abi>arm64-v8a</Abi>
+      </AndroidNativeLibrary>
+    </ItemGroup>
+  </Target>
+</Project>
