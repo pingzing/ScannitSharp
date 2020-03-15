@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
@@ -6,7 +6,7 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Version>1.0.5.24</Version>
+    <Version>1.0.11</Version>
     <Authors>Neil McAlister</Authors>
     <Company />
     <Product />
@@ -33,5 +33,9 @@
   </ItemGroup>  
 
 </Project>
+
+
+
+
 
 

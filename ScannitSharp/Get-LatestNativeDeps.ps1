@@ -6,6 +6,7 @@ $fileNameToFolderName = @{
     #Androids
     "aarch64-linux-android"    = @("android-arm64", "libscannit_core_ffi.so");
     "arm-linux-androideabi"    = @("android-arm", "libscannit_core_ffi.so");
+    "i686-linux-android"       = @("android-x86", "libscannit_core_ffi.so");
     #Windowses
     "x86_64-pc-windows-msvc"   = @("win-x64", "scannit_core_ffi.dll");
     "i686-pc-windows-msvc"     = @("win-x86", "scannit_core_ffi.dll");
@@ -44,17 +45,24 @@ foreach ($asset in $githubResponse.assets) {
     # This is (supposed to be) idempotent.
     Add-Type -Assembly System.IO.Compression.FileSystem;
     [System.IO.Compression.ZipArchive]$zipFile;
-    [string]$destPath = "$($PSScriptRoot)/runtimes/$($nativeFolderName)/native/scannit_core_ffi$($nativeFileExtension)";
+    [string]$destPath;
+    if ($nativeFolderName.ToLowerInvariant().Contains("android")) {
+        # Android requires either: a) "libscannit_core_ffi.so" OR "scannit_core_ffi" (no .so). "scannit_core_ffi.si" will never be found.
+        $destPath = "$($PSScriptRoot)/runtimes/$($nativeFolderName)/native/libscannit_core_ffi$($nativeFileExtension)";
+    }
+    else {
+        $destPath = "$($PSScriptRoot)/runtimes/$($nativeFolderName)/native/scannit_core_ffi$($nativeFileExtension)";
+    }
     try {
         $zipFile = [IO.Compression.ZipFile]::OpenRead("$($scratchFolder.FullName)/$($zipFileName)");
         $zipFile.Entries | 
-            Where-Object { $_.Name -eq $fileNameToExtract } | 
-            ForEach-Object { 
-                [System.IO.Compression.ZipFileExtensions]::ExtractToFile($_, $destPath, $true);
-            };
+        Where-Object { $_.Name -eq $fileNameToExtract } | 
+        ForEach-Object { 
+            [System.IO.Compression.ZipFileExtensions]::ExtractToFile($_, $destPath, $true);
+        };
     }
     catch {
-        Write-Error("Failed to open the zip file: $($_.Exception.Message)");
+        Write-Error("Failed to extract from the zip file: $($_.Exception.Message)");
     }
     finally {
         $zipFile.Dispose();
