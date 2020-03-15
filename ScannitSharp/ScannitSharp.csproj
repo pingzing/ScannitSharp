@@ -1,12 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>    
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Version>1.0.11.1</Version>
+    <Version>1.0.11.2</Version>
     <Authors>Neil McAlister</Authors>
     <Company />
     <Product />
@@ -16,6 +14,13 @@
     <PackageProjectUrl>https://github.com/pingzing/scannit-core</PackageProjectUrl>
     <RepositoryUrl>https://github.com/pingzing/scannit-core</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <!--Symbol stuff-->
+  <PropertyGroup>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,7 +35,8 @@
 
   <ItemGroup>
     <PackageReference Include="OneOf" Version="2.1.150" />
-  </ItemGroup>  
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+  </ItemGroup>
 
 </Project>
 
